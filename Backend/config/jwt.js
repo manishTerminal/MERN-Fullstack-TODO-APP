@@ -6,7 +6,7 @@ const todoCreateSchema = zod.object({
 });
 
 const updateSchema = zod.object({
-	completed: zod.boolean()
+	_id: zod.string()
 });
 
 module.exports = {

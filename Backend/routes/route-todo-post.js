@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { todoCreateSchema } = require("../config/jwt");
+const { todoCreateSchema, updateSchema } = require("../config/jwt");
 const todo = require("../db/db");
 
 router.post("/todos", async (req, res) => {
@@ -16,7 +16,8 @@ router.post("/todos", async (req, res) => {
 
 	await todo.create({
 		title: todoPayload.title,
-		description: todoPayload.description
+		description: todoPayload.description,
+		completed: false
 	});
 
 	return res.json({
@@ -24,8 +25,34 @@ router.post("/todos", async (req, res) => {
 	});
 });
 
-router.get("/todos", (req, res) => {});
+router.get("/todos", async (req, res) => {
+	const allTodo = await todo.find({});
+	return res.json({
+		allTodo
+	});
+});
 
-router.put("/todos", (req, res) => {});
+router.put("/todos", async (req, res) => {
+	const updatePayload = req.body;
+	const parsePayload = updateSchema.safeParse(updatePayload);
+
+	if (!parsePayload.success) {
+		res.json({
+			msg: "The is some error in update payload."
+		});
+		return;
+	}
+
+	await todo.updateOne(
+		{
+			_id: updatePayload._id
+		},
+		{ completed: true }
+	);
+
+	return res.json({
+		msg: "The completed is updated"
+	});
+});
 
 module.exports = router;
