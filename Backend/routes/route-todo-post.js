@@ -1,7 +1,9 @@
 const express = require("express");
 const router = express.Router();
 
-router.post("/todos", (req, res) => {});
+router.post("/todos", (req, res) => {
+    todoPayload = req.body
+});
 
 router.get("/todos", (req, res) => {});
 
