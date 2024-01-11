@@ -1,15 +1,26 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
+import { useState, useEffect } from "react";
 import "./App.css";
-import { Todo } from "./Components/Todo";
+import { TodoCreater } from "./Components/TodoCreater";
 import { TodoViewer } from "./Components/TodoViewer";
 
 function App() {
-	return <>
-    <Todo></Todo>
-    <TodoViewer></TodoViewer>
-  </>;
+	const [todos, setTodos] = useState([]);
+
+	useEffect(() => {
+		setInterval(() => {
+			fetch("http://localhost:4235/todos").then(async function (res) {
+				const json = await res.json();
+				setTodos(json.allTodo);
+			});
+		}, 500);
+	}, [todos]);
+
+	return (
+		<>
+			<TodoCreater></TodoCreater>
+			<TodoViewer todos={todos}></TodoViewer>
+		</>
+	);
 }
 
 export default App;

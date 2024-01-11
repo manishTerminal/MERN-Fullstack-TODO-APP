@@ -3,7 +3,7 @@ const router = express.Router();
 const { todoCreateSchema, updateSchema } = require("../config/jwt");
 const todo = require("../db/db");
 
-router.post("/todos", async (req, res) => {
+router.post("/todo", async (req, res) => {
 	const todoPayload = req.body;
 	const payloadParsing = todoCreateSchema.safeParse(todoPayload);
 
@@ -32,7 +32,7 @@ router.get("/todos", async (req, res) => {
 	});
 });
 
-router.put("/todos", async (req, res) => {
+router.put("/completed", async (req, res) => {
 	const updatePayload = req.body;
 	const parsePayload = updateSchema.safeParse(updatePayload);
 
